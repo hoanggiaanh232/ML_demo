@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meta Broadcast Plugin Demo</title>
+    <link rel="stylesheet" href="assets/style.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f6f8fa;
+            color: #333;
+        }
+        
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .demo-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 1px solid #e5e5e5;
+            padding-bottom: 20px;
+        }
+        
+        .demo-content {
+            line-height: 1.6;
+        }
+        
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            border-left: 4px solid #1877f2;
+        }
+        
+        .shortcode-example {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            color: #d63384;
+        }
+        
+        .feature-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            border: 1px solid #e5e5e5;
+        }
+        
+        .feature-item h4 {
+            margin-top: 0;
+            color: #1877f2;
+        }
+        
+        .test-buttons {
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .btn {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn:hover {
+            background: #166fe5;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            background: #1a1a1a;
+            color: #ffffff;
+        }
+        
+        body.dark-mode .demo-container {
+            background: #2d2d2d;
+            color: #ffffff;
+        }
+        
+        body.dark-mode .demo-section {
+            background: #3d3d3d;
+        }
+        
+        body.dark-mode .feature-item {
+            background: #404040;
+            border-color: #555;
+        }
+        
+        body.meta-broadcast-popup-open {
+            overflow: hidden;
+        }
+        
+        .meta-broadcast-icon.animate-bounce {
+            animation: iconBounce 0.6s ease-in-out;
+        }
+        
+        @keyframes iconBounce {
+            0%, 20%, 60%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-5px);
+            }
+            80% {
+                transform: translateY(-2px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <div class="demo-header">
+            <h1>WordPress Meta Broadcast Plugin</h1>
+            <p>Interactive demonstration of the notification system</p>
+        </div>
+        
+        <div class="demo-content">
+            <div class="demo-section">
+                <h2>🔔 Live Notification Icon</h2>
+                <p>The notification icon appears in the top-right corner. Click it to view broadcasts!</p>
+                
+                <!-- This is where our shortcode would render -->
+                <div class="meta-broadcast-icon-container" data-position="fixed" data-color="#1877f2">
+                    <div class="meta-broadcast-icon" style="background-color: #1877f2;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 10.5C21 10.78 20.78 11 20.5 11H19C18.45 11 18 11.45 18 12V18C18 19.1 17.1 20 16 20H8C6.9 20 6 19.1 6 18V12C6 11.45 5.55 11 5 11H3.5C3.22 11 3 10.78 3 10.5S3.22 10 3.5 10H5C6.1 10 7 10.9 7 12V18C7 18.55 7.45 19 8 19H16C16.55 19 17 18.55 17 18V12C17 10.9 17.9 10 19 10H20.5C20.78 10 21 10.22 21 10.5Z" fill="white"/>
+                        </svg>
+                        <span class="meta-broadcast-badge" id="meta-broadcast-badge">3</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>📱 Shortcode Usage</h2>
+                <p>Use these shortcodes in your WordPress posts or pages:</p>
+                
+                <div class="shortcode-example">
+                    [meta_broadcast_icon]
+                </div>
+                <p><small>Default: Fixed position, blue color (#1877f2)</small></p>
+                
+                <div class="shortcode-example">
+                    [meta_broadcast_icon position="relative" color="#ff6b6b"]
+                </div>
+                <p><small>Custom: Relative position, red color</small></p>
+                
+                <div class="shortcode-example">
+                    [meta_broadcast_icon color="#28a745"]
+                </div>
+                <p><small>Fixed position with green color</small></p>
+            </div>
+            
+            <div class="demo-section">
+                <h2>✨ Key Features</h2>
+                <div class="feature-list">
+                    <div class="feature-item">
+                        <h4>🎯 Smart Badge</h4>
+                        <p>Shows unread count with pulsing animation. Updates in real-time every 30 seconds.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🎨 Customizable Design</h4>
+                        <p>Change icon color and position to match your site's branding.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📱 Mobile Responsive</h4>
+                        <p>Optimized for all screen sizes with touch-friendly interactions.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🌙 Dark Mode Support</h4>
+                        <p>Automatically adapts to user's system preference for dark/light mode.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>⚡ Auto Mark Read</h4>
+                        <p>Notifications are automatically marked as read when the popup is opened.</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🔒 User-Specific</h4>
+                        <p>Each user sees only their unread notifications with proper tracking.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>🧪 Test Functionality</h2>
+                <p>Try these demo actions to see how the plugin works:</p>
+                
+                <div class="test-buttons">
+                    <button class="btn" onclick="simulateNewNotification()">Add New Notification</button>
+                    <button class="btn btn-secondary" onclick="simulateMarkAllRead()">Mark All Read</button>
+                    <button class="btn btn-secondary" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+                </div>
+            </div>
+            
+            <div class="demo-section">
+                <h2>🔧 Admin Panel</h2>
+                <p>The plugin includes a complete admin interface for managing broadcasts:</p>
+                <ul>
+                    <li>✅ Create new broadcasts with rich text editor</li>
+                    <li>✅ View all existing broadcasts in a table</li>
+                    <li>✅ Delete broadcasts with confirmation</li>
+                    <li>✅ Usage instructions and examples</li>
+                    <li>✅ Character counting and form validation</li>
+                </ul>
+                <p><strong>Admin menu location:</strong> WordPress Admin → Broadcasts</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Popup Modal -->
+    <div id="meta-broadcast-popup" class="meta-broadcast-popup" style="display: none;">
+        <div class="meta-broadcast-popup-overlay"></div>
+        <div class="meta-broadcast-popup-content">
+            <div class="meta-broadcast-popup-header">
+                <h3>Notifications</h3>
+                <button class="meta-broadcast-popup-close">&times;</button>
+            </div>
+            <div class="meta-broadcast-popup-body">
+                <div class="meta-broadcast-list">
+                    <div class="meta-broadcast-item unread" data-id="1">
+                        <div class="meta-broadcast-item-content">
+                            <h4 class="meta-broadcast-item-title">Welcome to the new notification system!</h4>
+                            <div class="meta-broadcast-item-text">We've upgraded our notification system to provide better real-time updates and improved user experience.</div>
+                            <div class="meta-broadcast-item-meta">
+                                <span class="meta-broadcast-item-date">2 hours ago</span>
+                                <span class="meta-broadcast-item-unread-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="meta-broadcast-item unread" data-id="2">
+                        <div class="meta-broadcast-item-content">
+                            <h4 class="meta-broadcast-item-title">New features available</h4>
+                            <div class="meta-broadcast-item-text">Check out the new customization options for the notification icon including position and color settings.</div>
+                            <div class="meta-broadcast-item-meta">
+                                <span class="meta-broadcast-item-date">5 hours ago</span>
+                                <span class="meta-broadcast-item-unread-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="meta-broadcast-item unread" data-id="3">
+                        <div class="meta-broadcast-item-content">
+                            <h4 class="meta-broadcast-item-title">Mobile optimization complete</h4>
+                            <div class="meta-broadcast-item-text">The notification system is now fully optimized for mobile devices with responsive design and touch interactions.</div>
+                            <div class="meta-broadcast-item-meta">
+                                <span class="meta-broadcast-item-date">1 day ago</span>
+                                <span class="meta-broadcast-item-unread-dot"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentBadgeCount = 3;
+        
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Icon click handler
+            const icon = document.querySelector('.meta-broadcast-icon');
+            if (icon) {
+                icon.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    openPopup();
+                });
+            }
+            
+            // Popup close handlers
+            const closeBtn = document.querySelector('.meta-broadcast-popup-close');
+            const overlay = document.querySelector('.meta-broadcast-popup-overlay');
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closePopup);
+            }
+            if (overlay) {
+                overlay.addEventListener('click', closePopup);
+            }
+            
+            // Prevent popup content click from closing
+            const popupContent = document.querySelector('.meta-broadcast-popup-content');
+            if (popupContent) {
+                popupContent.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+            
+            // ESC key to close popup
+            document.addEventListener('keydown', function(e) {
+                if (e.keyCode === 27) {
+                    const popup = document.getElementById('meta-broadcast-popup');
+                    if (popup && popup.style.display !== 'none') {
+                        closePopup();
+                    }
+                }
+            });
+        });
+        
+        function openPopup() {
+            const popup = document.getElementById('meta-broadcast-popup');
+            if (popup) {
+                popup.style.display = 'block';
+                document.body.classList.add('meta-broadcast-popup-open');
+                
+                // Simulate marking as read after viewing
+                setTimeout(() => {
+                    const items = document.querySelectorAll('.meta-broadcast-item');
+                    items.forEach(item => {
+                        item.classList.remove('unread');
+                        item.classList.add('read');
+                        const dot = item.querySelector('.meta-broadcast-item-unread-dot');
+                        if (dot) dot.remove();
+                    });
+                    currentBadgeCount = 0;
+                    updateBadgeDisplay();
+                }, 1500);
+            }
+        }
+        
+        function closePopup() {
+            const popup = document.getElementById('meta-broadcast-popup');
+            if (popup) {
+                popup.style.display = 'none';
+                document.body.classList.remove('meta-broadcast-popup-open');
+            }
+        }
+        
+        function simulateNewNotification() {
+            currentBadgeCount++;
+            updateBadgeDisplay();
+            
+            // Add animation
+            const icon = document.querySelector('.meta-broadcast-icon');
+            if (icon) {
+                icon.classList.add('animate-bounce');
+                setTimeout(() => {
+                    icon.classList.remove('animate-bounce');
+                }, 600);
+            }
+            
+            alert('New notification added! Badge count updated.');
+        }
+        
+        function simulateMarkAllRead() {
+            currentBadgeCount = 0;
+            updateBadgeDisplay();
+            
+            // Update visual state of notifications
+            const items = document.querySelectorAll('.meta-broadcast-item');
+            items.forEach(item => {
+                item.classList.remove('unread');
+                item.classList.add('read');
+                const dot = item.querySelector('.meta-broadcast-item-unread-dot');
+                if (dot) dot.remove();
+            });
+                
+            alert('All notifications marked as read!');
+        }
+        
+        function updateBadgeDisplay() {
+            const badge = document.getElementById('meta-broadcast-badge');
+            if (badge) {
+                if (currentBadgeCount > 0) {
+                    badge.textContent = currentBadgeCount > 99 ? '99+' : currentBadgeCount;
+                    badge.style.display = 'flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+        
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+        }
+    </script>
+</body>
+</html>
